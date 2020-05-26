@@ -8,9 +8,14 @@ function projectsAPI(app) {
     const projectsService = new ProjectsService();
 
     //Control de rutas
-    router.get("/", (req, res, next) => {
+    router.get("/", async (req, res, next) => {
+        const { tag } = req.query;
         try {
-            res.json({ data: "Funcionando" });
+            const projects = await projectsService.getProjects({ tag });
+            res.status(200).json({
+                data: projects,
+                message: 'Projects listed',
+            });
         } catch (err) {
             next(err);
         }
