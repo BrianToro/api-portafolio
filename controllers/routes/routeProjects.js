@@ -1,5 +1,5 @@
 const express = require("express");
-const ProjectsService = require("../services/projects");
+const ProjectsService = require("../../services/projects");
 const { check, validationResult } = require("express-validator");
 
 function projectsAPI(app) {
@@ -64,6 +64,52 @@ function projectsAPI(app) {
                 res.status(201).json({
                     data: createdProjectId,
                     message: "Project created",
+                });
+            } catch (err) {
+                next(err);
+            }
+        }
+    );
+
+    router.delete("/:projectId", async (req, res, next) => {
+        const { projectId } = req.params;
+        try {
+            const deleteProjectId = await projectsService.deleteProject({
+                projectId,
+            });
+            res.status(201).json({
+                data: deleteProjectId,
+                message: "Project removed",
+            });
+        } catch (err) {
+            next(err);
+        }
+    });
+
+    router.put(
+        "/:projectId",
+        [
+            check("project_title")
+                .isString()
+                .isLength({ min: 10, max: 50 }),
+            check("project_description")
+                .isString()
+                .isLength({ min: 10, max: 500 }),
+            check("project_img").isURL(),
+            check("tags").isArray(),
+            check("publicated_at").isString(),
+        ],
+        async (req, res, next) => {
+            const { projectId } = req.params;
+            const { body: project } = req;
+            try {
+                const updateProjectId = await projectsService.updateProject({
+                    projectId,
+                    project,
+                });
+                res.status(201).json({
+                    data: updateProjectId,
+                    message: "Project updated",
                 });
             } catch (err) {
                 next(err);

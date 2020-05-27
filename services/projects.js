@@ -20,6 +20,16 @@ class ProjectsService {
         const createdProjectId = this.mongoDB.create(this.collection, project);
         return createdProjectId;
     }
+
+    async deleteProject({ projectId }){
+        const deleteProjectId = this.mongoDB.delete(this.collection, projectId);
+        return deleteProjectId;
+    }
+
+    async updateProject({ projectId, project }){
+        const updateProjectId = this.mongoDB.update(this.collection, projectId, project);
+        return updateProjectId;
+    }
 }
 
 module.exports = ProjectsService;

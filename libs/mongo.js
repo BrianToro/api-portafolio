@@ -49,6 +49,28 @@ class MongoLib {
             })
             .then((result) => result.insertedId);
     }
+
+    delete(collection, id) {
+        return this.connect()
+            .then((db) => {
+                return db.collection(collection).deleteOne({ _id: ObjectId(id) });
+            })
+            .then(() => id);
+    }
+
+    update(collection, id, data) {
+        return this.connect()
+            .then((db) => {
+                return db
+                    .collection(collection)
+                    .updateOne(
+                        { _id: ObjectId(id) },
+                        { $set: data },
+                        { upsert: true }
+                    );
+            })
+            .then((result) => result.upsertedId || id);
+    }
 }
 
 module.exports = MongoLib;

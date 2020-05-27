@@ -1,7 +1,7 @@
 const express = require("express");
 const { config } = require("./config/index.js");
 const cors = require("cors");
-const { projectsAPI } = require("./controllers/routeController");
+const { projectsAPI } = require("./controllers/routes/routeProjects");
 
 //Inicio del servidor
 const app = express();
