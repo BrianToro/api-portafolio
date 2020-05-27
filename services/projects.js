@@ -11,6 +11,11 @@ class ProjectsService {
         return projects || [];
     }
 
+    async getProject({ projectId }){
+        const project = this.mongoDB.get(this.collection, projectId);
+        return project || {};
+    }
+
     async createProject({ project }){
         const createdProjectId = this.mongoDB.create(this.collection, project);
         return createdProjectId;

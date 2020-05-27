@@ -34,6 +34,14 @@ class MongoLib {
         });
     }
 
+    get(collection, id) {
+        return this.connect().then((db) => {
+            return db
+                .collection(collection)
+                .findOne({ _id: ObjectId(id) })
+        });
+    }
+
     create(collection, data) {
         return this.connect()
             .then((db) => {
