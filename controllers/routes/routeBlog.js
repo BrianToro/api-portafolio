@@ -8,6 +8,9 @@ function blogAPI(app) {
     app.use("/api/blog", router);
     const blogService = new BlogService();
 
+    //Control de rutas 
+
+    //Traer todas las entradas del blog
     router.get("/", async (req, res, next) => {
         const { tag } = req.query;
         try {
@@ -21,6 +24,21 @@ function blogAPI(app) {
         }
     });
 
+    //Trae una entrada del blog
+    router.get("/:postId", async (req, res, next) => {
+        const { postId } = req.params;
+        try {
+            const post = await blogService.getPost({ postId });
+            res.status(200).json({
+                data: post,
+                message: "Post retrieved",
+            });
+        } catch (err) {
+            next(err);
+        }
+    });
+
+    //Entra una entrada al blog
     router.post(
         "/",
         [
@@ -56,6 +74,22 @@ function blogAPI(app) {
             }
         }
     );
+
+    //Elimina una nueva entrada del blog
+    router.delete("/:postId", async (req, res, next) => {
+        const { projectId } = req.params;
+        try {
+            const deletePostId = await blogService.deletePost({
+                postId,
+            });
+            res.status(201).json({
+                data: deletePostId,
+                message: "Project removed",
+            });
+        } catch (err) {
+            next(err);
+        }
+    });
 }
 
 module.exports = { blogAPI }

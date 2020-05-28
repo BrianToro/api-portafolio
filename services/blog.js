@@ -12,9 +12,19 @@ class BlogService {
         return post|| [];
     }
 
+    async getPost({ postId }){
+        const post = this.mongoDB.get(this.collection, postId);
+        return post || {};
+    }
+
     async createPost({ post }){
         const createdPostId = this.mongoDB.create(this.collection, post);
         return createdPostId;
+    }
+
+    async deletePost({ postId }){
+        const deletePostId = this.mongoDB.delete(this.collection, postId);
+        return deletePostId;
     }
 }
 

@@ -9,6 +9,8 @@ function projectsAPI(app) {
     const projectsService = new ProjectsService();
 
     //Control de rutas
+
+    //Traer todos los proyectos
     router.get("/", async (req, res, next) => {
         const { tag } = req.query;
         try {
@@ -22,12 +24,13 @@ function projectsAPI(app) {
         }
     });
 
+    //Trae un proyecto
     router.get("/:projectId", async (req, res, next) => {
         const { projectId } = req.params;
         try {
-            const projects = await projectsService.getProject({ projectId });
+            const project = await projectsService.getProject({ projectId });
             res.status(200).json({
-                data: projects,
+                data: project,
                 message: "Project retrieved",
             });
         } catch (err) {
@@ -35,6 +38,7 @@ function projectsAPI(app) {
         }
     });
 
+    //Entra un nuevo proyecto
     router.post(
         "/",
         [
@@ -71,6 +75,7 @@ function projectsAPI(app) {
         }
     );
 
+    //Elimina un proyecto
     router.delete("/:projectId", async (req, res, next) => {
         const { projectId } = req.params;
         try {
@@ -86,6 +91,7 @@ function projectsAPI(app) {
         }
     });
 
+    //Actualiza un proyecto
     router.put(
         "/:projectId",
         [
