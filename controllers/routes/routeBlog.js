@@ -90,6 +90,38 @@ function blogAPI(app) {
             next(err);
         }
     });
+
+    //Actualizar entrada del blog
+    router.put(
+        "/:postId",
+        [
+            check("post_title")
+                .isString()
+                .isLength({ min: 10, max: 50 }),
+            check("post_description")
+                .isString()
+                .isLength({ min: 10, max: 500 }),
+            check("post_img").isURL(),
+            check("tags").isArray(),
+            check("publicated_at").isString(),
+        ],
+        async (req, res, next) => {
+            const { postId } = req.params;
+            const { body: post } = req;
+            try {
+                const updatePostId = await blogService.updatePost({
+                    postId,
+                    post,
+                });
+                res.status(201).json({
+                    data: updatePostId,
+                    message: "Post updated",
+                });
+            } catch (err) {
+                next(err);
+            }
+        }
+    );
 }
 
 module.exports = { blogAPI }

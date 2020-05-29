@@ -26,6 +26,11 @@ class BlogService {
         const deletePostId = this.mongoDB.delete(this.collection, postId);
         return deletePostId;
     }
+
+    async updatePost({ postId, post }){
+        const updatePostId = this.mongoDB.update(this.collection, postId, post);
+        return updatePostId;
+    }
 }
 
 module.exports = BlogService;
